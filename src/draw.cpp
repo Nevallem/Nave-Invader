@@ -175,12 +175,14 @@ void Enemy::move( Enemy &enemy, int numEnemies, int currentEnemy ) {
 
 void Enemy::release( int numEnemies, int chancesEnemies, int enemyLife ) {
 	int i = -1,
-		j = 0;
+		j = -1;
 
 	// Runs the enemies
 	while ( ++i < numEnemies ) {
 		// if !active, tries generate a new enemy
-		if ( ( !enemies[ i ].active && !enemies[ i ].exploded ) && ( randomNumber( 0, chancesEnemies + 1 ) == chancesEnemies || getEnemiesActives( numEnemies ) < ( numEnemies / 2 ) ) ) {
+		if ( ( !enemies[ i ].active && !enemies[ i ].exploded ) 
+			&& ( randomNumber( 0, chancesEnemies + 1 ) == chancesEnemies || getEnemiesActives( numEnemies ) < ( numEnemies / 2 ) ) 
+		) {
 			// Sets the enemy coordenates, active and break
 			enemies[ i ].x = WIDTH;
 			enemies[ i ].y = randomNumber( 60, HEIGHT - 55 );
@@ -190,7 +192,7 @@ void Enemy::release( int numEnemies, int chancesEnemies, int enemyLife ) {
 			enemies[ i ].life = enemyLife;
 
 			// Check for colisions with another enemy
-			for ( j = 0; j < numEnemies; j++ ) {
+			while ( ++j < numEnemies ) {
 				if ( j == i )
 					continue;
 
