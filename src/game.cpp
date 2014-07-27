@@ -11,7 +11,7 @@ bool Game::soundActive = true;
 bool Game::stopQueue = false;
 
 // Sets the initial keys state
-bool Game::keys[ 8/*9*/ ] = { false, false, false, false, false, false, false, false,/*, false*/ };
+bool Game::keys[ 8 ] = { false, false, false, false, false, false, false, false };
 
 // Sets nullptr to bitmaps and audio
 ALLEGRO_BITMAP *Game::mainBackground = nullptr;
@@ -25,7 +25,7 @@ ALLEGRO_SAMPLE_INSTANCE *Game::inst_enemyReached = nullptr;
 ALLEGRO_AUDIO_STREAM *Game::soundTrack = nullptr;
 
 void Game::setAudioStreamState( ALLEGRO_AUDIO_STREAM *as, bool state, int time ) {
-	al_set_audio_stream_playing( as, /*false*/state );
+	al_set_audio_stream_playing( as, state );
 
 	// Set the time
 	if ( time > -1 )

@@ -27,17 +27,13 @@ public:
 	float timeRemaing;
 	ALLEGRO_BITMAP *background;
 
-	/**
-	 * Destroys the level
-	 *
-	 * @param {std::vector< LevelsMap > &} Level
-	 */
+	/// Destroys the level
+	//
+	// @param {std::vector< LevelsMap > &} Level
 	static void destroy( LevelsMap & );
 
-	/**
-	 * Start the level definitions
-	 *
-	 * @param {std::vector< LevelsMap > &} Level
-	 */
+	// Start the level definitions
+	//
+	// @param {std::vector< LevelsMap > &} Level
 	static void load( LevelsMap & );
 };

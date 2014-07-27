@@ -169,14 +169,10 @@ class Background {
 public:
 	int x, y, speed;
 
-	/**
-	 * Updade the position of the stars
-	 */
+	// Updade the position of the stars
 	static void update( ALLEGRO_BITMAP * );
 
-	/**
-	 * Init the background
-	 */
+	// Init the background
 	static void init();
 };
 
@@ -184,6 +180,5 @@ public:
 static vector< PlayerAmmo > playerShots( NUM_SHOTS_PLAYER );
 static vector< vector< EnemyAmmo > > enemyShots( NUM_ENEMIES );
 static vector< Enemy > enemies;
-//static vector< vector< Background > > backgrounds( NUM_BACKGROUNDS );
 static vector< Background > backgrounds( NUM_STARS );
 static vector< ALLEGRO_BITMAP * > explosionImgs;

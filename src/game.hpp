@@ -57,81 +57,59 @@ private:
 	// Current level
 	LevelsMap level;
 
-	/**
-	 * Show the highscores
-	 */
+	// Show the highscores
 	void highScores();
 
-	/**
-	 * Heads-up display
-	 */
+	// Heads-up display
 	void HUD();
 
-	/**
-	 * Game over
-	 */
+	// Game over
 	void gameOver();
 
-	/**
-	 * Requires a input text for the player
-	 *
-	 * @param {std::string &} Input
-	 * @param {int} Position x
-	 * @param {int} Position y
-	 */
+	// Requires a input text for the player
+	//
+	// @param {std::string &} Input
+	// @param {int} Position x
+	// @param {int} Position y
 	void inputText( std::string &, int, int );
 
-	/**
-	 * Load sounds
-	 */
+	// Load sounds
 	void loadSounds();
 
-	/**
-	 * Next level
-	 */
+	// Next level
 	void nextLevel();
 
-	/**
-	 * Pauses the game
-	 */
+	// Pauses the game
 	void pause();
 
-	/**
-	 * Main function
-	 */
+	// Main function
 	void run();
 
-	/**
-	 * Starts the queue of events
-	 *
-	 * @param {void ( Game::* )()} The main function which will run the game
-	 */
+	// Starts the queue of events
+	//
+	// @param {void ( Game::* )()} The main function which will run the game
 	void startEventQueue( void ( Game::* )() );
 
-	/**
-	 * Menu initial
-	 */
+	// Menu initial
 	void startMenu();
 
-	/**
-	 * Set audio stream state
-	 *
-	 * @param {ALLEGRO_AUDIO_STREAM *} Audios stream
-	 * @param {boolean} State
-	 * @param {int=0} Time
-	 */
+	// Set audio stream state
+	//
+	// @param {ALLEGRO_AUDIO_STREAM *} Audios stream
+	// @param {boolean} State
+	// @param {int=0} Time
 	static void setAudioStreamState( ALLEGRO_AUDIO_STREAM *, bool, int = 0 );
 public:
 	// Stats of the player
 	static int HP, points, currentLevel;
 
 	// Keys state
-	static bool keys[ 8/*9*/ ];
+	static bool keys[ 8 ];
 
 	// Sound state
 	static bool soundActive;
 
-	/* _________AUDIO__________ */
+	// _________AUDIO__________ //
 
 	// Main background music
 	ALLEGRO_AUDIO_STREAM *mainBgMusic = nullptr;
@@ -158,7 +136,7 @@ public:
 	ALLEGRO_SAMPLE *laser = nullptr;
 	static ALLEGRO_SAMPLE_INSTANCE *inst_laser;
 
-	/* _________AUDIO__________ */
+	// _________AUDIO__________ //
 
 	// Images
 	ALLEGRO_BITMAP *logoImage = nullptr;
@@ -185,24 +163,18 @@ public:
 
 	// Messages of the game
 	std::map< const char *, const char * > messages;
-
-	/**
-	 * Inits the game
-	 */
+	
+	//Inits the game
 	void init();
 
-	/**
-	 * Wait for ESCAPE or ENTER keys
-	 *
-	 * @param {std::function< void() >} Callback function, after ENTER button be pressed
-	 */
+	// Wait for ESCAPE or ENTER keys
+	//
+	// @param {std::function< void() >} Callback function, after ENTER button be pressed
 	static void getMasterEvents( std::function< void() > );
 
-	/**
-	 * Play sounds
-	 *
-	 * @param {ALLEGRO_SAMPLE_INSTANCE *} Sound instance
-	 */
+	// Play sounds
+	//
+	// @param {ALLEGRO_SAMPLE_INSTANCE *} Sound instance
 	static void playSoundInstance( ALLEGRO_SAMPLE_INSTANCE * );
 
 	/**
