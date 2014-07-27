@@ -1,6 +1,6 @@
 /**
  * @author Roger Lima (rogerlima@outlook.com)
- * @date 26/jul/2014
+ * @date 27/jul/2014
  */
 #include <allegro5/allegro_native_dialog.h>
 #include "game.hpp"

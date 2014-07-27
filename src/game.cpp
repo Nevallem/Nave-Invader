@@ -476,15 +476,7 @@ void Game::run() {
 	if ( event.type == ALLEGRO_EVENT_KEY_CHAR ) {
 		keybdUnichar = event.keyboard.unichar;
 		keys[ ANY_CHAR ] = true;
-	}/* else if ( event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && event.mouse.button & 1 ) {
-		if ( gameRunning ) {
-			player.shoot( inst_laser );
-			keys[ MOUSE_BUTTON_1 ] = true;
-		}
-	} else if ( event.type == ALLEGRO_EVENT_MOUSE_AXES ) {
-		player.x = event.mouse.x;
-		player.y = event.mouse.y;
-	}*/
+	}
 
 	// Sync FPS
 	if ( event.type == ALLEGRO_EVENT_TIMER ) {
@@ -557,7 +549,6 @@ void Game::run() {
 
 		// Release the enemies
 		enemies.release( level.numEnemies, level.chancesEnemies, level.enemyLife );
-		enemies.shoot();
 
 		draws = true;
 	}
@@ -611,7 +602,7 @@ void Game::init() {
 };
 
 Game::Game() {
-	/* Sets the messages */
+	// Sets the messages //
 
 	// Errors
 	messages[ "error-boxTitle" ] = "Aviso";
@@ -645,7 +636,7 @@ Game::Game() {
 };
 
 Game::~Game() {
-	/* Destroys everything after execution of the game */
+	// Destroys everything after execution of the game //
 
 	// General
 	al_destroy_display( display );

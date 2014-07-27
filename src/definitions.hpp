@@ -12,7 +12,8 @@
 #define SOUND_TRACK_VOLUME 0.4
 
 // Background
-#define NUM_STARS 300
+#define NUM_BACKGROUNDS 3
+#define NUM_STARS 100
 #define SPEED_STARS_FAR 1
 #define SPEED_STARS_MID 2
 #define SPEED_STARS_NEAR 4
@@ -58,10 +59,14 @@
 #define PLAYER_HP 100
 #define SPEED_NAVE 10
 #define SPEED_SHOOT_PLAYER 30
+#define PLAYER_TOP_BORDER 30
+#define PLAYER_BOT_BORDER ( HEIGHT - 50 )
+#define PLAYER_LEFT_BORDER 0
+#define PLAYER_RIGHT_BORDER ( WIDTH / 3 )
 
 // Resolution definitions
 #define WIDTH 800
 #define HEIGHT 400
 
 // Keys map
-enum KeysMap { UP, DOWN, LEFT, RIGHT, SPACE, ENTER, ESCAPE, ANY_CHAR/*, MOUSE_BUTTON_1*/ };
+enum KeysMap { UP, DOWN, LEFT, RIGHT, SPACE, ENTER, ESCAPE, ANY_CHAR };

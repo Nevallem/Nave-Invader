@@ -1,9 +1,10 @@
 #include <string>
+#include <math.h>
 #include "definitions.hpp"
 #include "draw.hpp"
 #include "game.hpp"
 
-/* ____________PLAYER____________ */
+// ____________PLAYER____________ //
 
 void Spaceship::update() {
 	// Draws
@@ -23,22 +24,22 @@ void Spaceship::move( int direction ) {
 	switch ( direction ) {
 		case UP:
 			y -= speed;
-			y = ( y < 30 ) ? 30 : y; // Top border
+			y = ( y < PLAYER_TOP_BORDER ) ? PLAYER_TOP_BORDER : y; // Top border
 		break;
 
 		case DOWN:
 			y += speed;
-			y = ( y + 50 > HEIGHT ) ? HEIGHT - 50 : y; // Bot border
+			y = ( ( y + 50 ) > HEIGHT ) ? PLAYER_BOT_BORDER : y; // Bot border
 		break;
 
 		case LEFT:
 			x -= speed;
-			x = ( x < 0 ) ? 0 : x; // Left border
+			x = ( x < PLAYER_LEFT_BORDER ) ? PLAYER_LEFT_BORDER : x; // Left border
 		break;
 
 		case RIGHT:
 			x += speed;
-			x = ( x > WIDTH / 3 ) ? ( WIDTH / 3 ) : x; // Right border
+			x = ( x > PLAYER_RIGHT_BORDER ) ? PLAYER_RIGHT_BORDER : x; // Right border
 		break;
 	}
 };
@@ -82,7 +83,7 @@ void PlayerAmmo::update( int numEnemies, int gainPointsToEnemyDestroyed ) {
 			continue;
 
 		// Updates the shot position
-		if ( Game::keys[ SPACE ]/* || Game::keys[ MOUSE_BUTTON_1 ]*/ ) {
+		if ( Game::keys[ SPACE ] ) {
 			playerShots[ i ].x += SPEED_SHOOT_PLAYER;
 
 			// If cross the window, active = false
@@ -105,7 +106,7 @@ void PlayerAmmo::update( int numEnemies, int gainPointsToEnemyDestroyed ) {
 			if ( playerShots[ i ].x > ( enemies[ j ].x - enemies[ j ].border_x )
 				&& playerShots[ i ].x < ( enemies[ j ].x + enemies[ j ].border_x )
 				&& playerShots[ i ].y > ( enemies[ j ].y - enemies[ j ].border_y )
-				&& playerShots[ i ].y < ( enemies[ j ].y + 50/*enemies[ j ].border_y*/ )
+				&& playerShots[ i ].y < ( enemies[ j ].y + 50 )
 			) {
 				playerShots[ i ].active = false;
 				
@@ -133,7 +134,7 @@ void PlayerAmmo::init() {
 	}
 };
 
-/* ____________ENEMY____________ */
+// ____________ENEMIES____________ //
 
 void Enemy::move( Enemy &enemy, int numEnemies, int currentEnemy ) {
 	int i;
@@ -163,7 +164,7 @@ void Enemy::move( Enemy &enemy, int numEnemies, int currentEnemy ) {
 
 		// If collides, changes the direction
 		if ( ( enemy.x - enemy.border_x ) < ( enemies[ i ].x + enemies[ i ].border_x )
-			&& ( enemy.y - enemy.border_y ) < ( enemies[ i ].y + 25/*nave.border_y*/ )
+			&& ( enemy.y - enemy.border_y ) < ( enemies[ i ].y + 25 )
 			&& ( enemy.x + enemy.border_x ) > ( enemies[ i ].x - enemies[ i ].border_x )
 			&& ( enemy.y + enemy.border_y ) > ( enemies[ i ].y - enemies[ i ].border_y ) 
 		) {
@@ -195,7 +196,7 @@ void Enemy::release( int numEnemies, int chancesEnemies, int enemyLife ) {
 
 				// Colision test
 				if ( ( enemies[ i ].x - enemies[ i ].border_x ) < ( enemies[ j ].x + enemies[ j ].border_x )
-					&& ( enemies[ i ].y - enemies[ i ].border_y ) < ( enemies[ j ].y + 25/*nave.border_y*/ )
+					&& ( enemies[ i ].y - enemies[ i ].border_y ) < ( enemies[ j ].y + 25 )
 					&& ( enemies[ i ].x + enemies[ i ].border_x ) > ( enemies[ j ].x - enemies[ j ].border_x )
 					&& ( enemies[ i ].y + enemies[ i ].border_y ) > ( enemies[ j ].y - enemies[ j ].border_y )
 				) {
@@ -209,26 +210,6 @@ void Enemy::release( int numEnemies, int chancesEnemies, int enemyLife ) {
 		}
 	}
 };
-
-void Enemy::shoot() {
-	int i = 0, 
-		j = -1;
-
-	for ( i = 0; i < NUM_ENEMIES; i++ ) {
-		// Runs the shots of the enemey
-		while ( ++j < NUM_SHOTS_ENEMY ) {
-			if ( !enemyShots[ i ][ j ].active )
-				continue;
-
-			// Sets the coordinates, active and break
-			enemyShots[ i ][ j ].x = x - 17;
-			enemyShots[ i ][ j ].y = y - 29;
-			enemyShots[ i ][ j ].active = true;
-
-			break;
-		}
-	}
-}
 
 void Enemy::update( Spaceship &player, int numEnemies, int dropHP ) {
 	int i;
@@ -263,7 +244,7 @@ void Enemy::update( Spaceship &player, int numEnemies, int dropHP ) {
 		// Collision test
 		if ( ( enemies[ i ].x - enemies[ i ].border_x ) < ( player.x + player.border_x )
 			&& ( enemies[ i ].x + enemies[ i ].border_x ) > ( player.x - player.border_x )
-			&& ( enemies[ i ].y - enemies[ i ].border_y ) < ( player.y + 25/*nave.border_y*/ )
+			&& ( enemies[ i ].y - enemies[ i ].border_y ) < ( player.y + 25 )
 			&& ( enemies[ i ].y + enemies[ i ].border_y ) > ( player.y - player.border_y )
 		) {
 			enemies[ i ].active = false;
@@ -303,70 +284,63 @@ int Enemy::getEnemiesActives( int numEnemies ) {
 };
 
 void EnemyAmmo::update( Spaceship &player, int chancesEnemyShot, int dropHPShot ) {
-	int i, j;
+	int i;
 
 	// Runs the shots of player
-	for ( i = 0; i < NUM_ENEMIES; i++ ) {
-		if ( !enemies[ i ].active )
+	for ( i = 0; i < NUM_ENEMIES * NUM_SHOTS_ENEMY; i++ ) {
+		if ( !enemies[ i / NUM_SHOTS_ENEMY ].active )
 			continue;
 
-		for ( j = 0; j < NUM_SHOTS_ENEMY; j++ ) {
-			// If !active
-			if ( !enemyShots[ i ][ j ].active ) {
-				// Tries generate a new shot
-				if ( randomNumber( 0, chancesEnemyShot + 1 ) == chancesEnemyShot ) {
-					enemyShots[ i ][ j ].x = enemies[ i ].x - 10;
-					enemyShots[ i ][ j ].y = enemies[ i ].y + 25;
-					enemyShots[ i ][ j ].active = true;
-				}
-
-				continue;
+		// If !active
+		if ( !enemyShots[ i ].active ) {
+			// Tries generate a new shot
+			if ( randomNumber( 0, chancesEnemyShot + 1 ) == chancesEnemyShot ) {
+				enemyShots[ i ].x = enemies[ i / NUM_SHOTS_ENEMY ].x - 10;
+				enemyShots[ i ].y = enemies[ i / NUM_SHOTS_ENEMY ].y + 25;
+				enemyShots[ i ].active = true;
 			}
 
-			enemyShots[ i ][ j ].x -= SPEED_SHOOT_ENEMY;
+			continue;
+		}
 
-			// If cross the window, active = false and continue
-			if ( enemyShots[ i ][ j ].x < 0 ) {
-				enemyShots[ i ][ j ].active = false;
+		enemyShots[ i ].x -= SPEED_SHOOT_ENEMY;
 
-				continue;
-			}
+		// If cross the window, active = false and continue
+		if ( enemyShots[ i ].x < 0 ) {
+			enemyShots[ i ].active = false;
 
-			// Draws
-			al_draw_filled_circle( enemyShots[ i ][ j ].x, enemyShots[ i ][ j ].y - 3, 2, RED );
+			continue;
+		}
 
-			// Checks for colision
-			if ( enemyShots[ i ][ j ].x < ( player.x + player.border_x )
-				&& enemyShots[ i ][ j ].x > ( player.x - player.border_x )
-				&& enemyShots[ i ][ j ].y < ( player.y + 50/*nave.border_y*/ )
-				&& enemyShots[ i ][ j ].y > ( player.y - player.border_y )
-			) {
-				enemyShots[ i ][ j ].active = false;
-				player.reached = true;
+		// Draws
+		al_draw_filled_circle( enemyShots[ i ].x, enemyShots[ i ].y - 3, 2, RED );
 
-				Game::playSoundInstance( Game::inst_explosion );
-				Game::HP -= ( dropHPShot > Game::HP ) ? Game::HP : dropHPShot;
-			}
+		// Checks for colision
+		if ( enemyShots[ i ].x < ( player.x + player.border_x )
+			&& enemyShots[ i ].x > ( player.x - player.border_x )
+			&& enemyShots[ i ].y < ( player.y + 50 )
+			&& enemyShots[ i ].y > ( player.y - player.border_y )
+		) {
+			enemyShots[ i ].active = false;
+			player.reached = true;
+
+			Game::playSoundInstance( Game::inst_explosion );
+			Game::HP -= ( dropHPShot > Game::HP ) ? Game::HP : dropHPShot;
 		}
 	}
 };
 
 void EnemyAmmo::init() {
-	int i, j;
-	EnemyAmmo ammo;
+	int i;
 
 	// Runs the shots of player and set the init values
-	for ( i = 0; i < NUM_ENEMIES * 2; i++ ) {
-		for ( j = 0; j < NUM_SHOTS_ENEMY; j++ ) {
-			ammo.active = false;
-			ammo.speed = SPEED_SHOOT_ENEMY;
-
-			enemyShots[ i / 2 ].push_back( ammo );
-		}
+	for ( i = 0; i < NUM_ENEMIES * NUM_SHOTS_ENEMY; i++ ) {
+		enemyShots[ i ].active = false;
+		enemyShots[ i ].speed = SPEED_SHOOT_ENEMY;
 	}
 };
 
-/* ____________EXPLOSION____________ */
+// ____________EXPLOSION____________ //
 
 void Explosion::destroyImages() {
 	int i;
@@ -400,7 +374,7 @@ void Explosion::show( int numEnemies ) {
 	}
 };
 
-/* ____________BACKGROUND____________ */
+// ____________BACKGROUND____________ //
 
 void Background::update( ALLEGRO_BITMAP *img ) {
 	int i;
@@ -408,7 +382,7 @@ void Background::update( ALLEGRO_BITMAP *img ) {
 	al_draw_bitmap( img, 0, 0, NULL );
 
 	// Runs the backgrounds
-	for ( i = 0; i < NUM_STARS; i++ ) {
+	for ( i = 0; i < NUM_BACKGROUNDS * NUM_STARS; i++ ) {
 		backgrounds[ i ].x -= backgrounds[ i ].speed;
 
 		// If the star cross the window, back to init
@@ -425,8 +399,8 @@ void Background::init() {
 		speedStars[] = { SPEED_STARS_NEAR, SPEED_STARS_MID, SPEED_STARS_FAR };
 
 	// Runs the backgrounds
-	for ( i = 0; i < NUM_STARS; i++ ) {
-		backgrounds[ i ].speed = speedStars[ i / 100 ];
+	for ( i = 0; i < NUM_BACKGROUNDS * NUM_STARS; i++ ) {
+		backgrounds[ i ].speed = speedStars[ i / NUM_STARS ];
 		backgrounds[ i ].x = randomNumber( 5, WIDTH - 10 );
 		backgrounds[ i ].y = randomNumber( 5, HEIGHT - 10 );
 	}
