@@ -15,8 +15,8 @@
 #define NUM_BACKGROUNDS 3
 #define NUM_STARS 100
 #define SPEED_STARS_FAR 1
-#define SPEED_STARS_MID 2
-#define SPEED_STARS_NEAR 4
+#define SPEED_STARS_MID 3
+#define SPEED_STARS_NEAR 6
 
 // Colors
 #define BLACK al_map_rgb( 0, 0, 0 )
